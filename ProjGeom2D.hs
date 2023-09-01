@@ -5,13 +5,13 @@ type HomogeneousCoordinate = (Double,Double,Double)
 
 type LineCoefficient = (Double,Double,Double)
 
+--data Line = Line LineCoefficient
+
+--data Point = Point HomogeneousCoordinate
+
 data Element = Plane | Line LineCoefficient | Point HomogeneousCoordinate | Nothing
 
-data Line = Line LineCoefficient
-
-data Point = Point HomogeneousCoordinate
-
-dimension :: Element a -> Integer
+dimension :: Element -> Integer
 dimension e = case e of
   Plane -> 2
   Line _  -> 1
@@ -52,8 +52,8 @@ precision = 0.0001
 included :: Element -> Element -> Bool
 included _ Plane = True
 included Plane _ = False
-included Nothing _ = True
-include _ Nothig = False
+included ProjGeom2D.Nothing _ = True
+included _ ProjGeom2D.Nothing = False
 included (Line a) (Line b) = ((Line a) ProjGeom2D.== (Line b))
 included (Line _) (Point _) = False
 included (Point (x,y,z)) (Line (a,b,c)) = abs(a*x + b*y + c*z) < precision*(sqrt(a^2+b^2+c^2)*sqrt(x^2+y^2+z^2))
@@ -65,10 +65,10 @@ included (Point (x1,y1,z1)) (Point (x2,y2,z2)) = False --todo: implement
 
 -- a symmetricity between point and line.
 
-incident :: Line -> Line -> Point
+--incident :: Line -> Line -> Point
 incident (Line (a1,b1,c1)) (Line (a2,b2,c2)) = Point ((b1*c2-b2*c1),(c1*a2-c2*a1),(a1*b2-b1*a2))
 
-aLine :: Point -> Point -> Line
+--aLine :: Point -> Point -> Line
 aLine (Point (x1,y1,z1)) (Point (x2,y2,z2)) = Line ((y1*z2-y2*z1),(z1*x2-z2*x1),(x1*y2-x2*y1))
 
 
